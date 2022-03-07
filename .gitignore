@@ -1,0 +1,8 @@
+# Ignore ALL .DS_Store files
+*.DS_Store
+
+# Ignore the .env file containing development environment details
+.env
+
+# Ignore ANY node_modules directory as the local user will have their own installations by running `npm install`
+node_modules
