@@ -17,10 +17,7 @@ const port = process.env.PORT; // Define the port that our express server will l
 var mc = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
   username: process.env.MEMCACHEDCLOUD_USERNAME,
   password: process.env.MEMCACHEDCLOUD_PASSWORD,
-  failover: true,
-  timeout: 300, // seconds
-  keepAlive: true 
-})
+});
 
 // Serve Static Files such as Images, Stylesheets, and JS Scripts
 app.use(express.static(__dirname + '/public'));
