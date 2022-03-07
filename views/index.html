@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Michael Weiner">
+
+    <title>KenyonWX</title>
+
+    <link rel="stylesheet" href="css/base.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,300;0,500;1,100;1,300;1,500&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header>
+    
+    </header>
+    <main>
+
+      <div id="site-title">
+        <h1>Kenyon, MN</h1>
+      </div>
+
+      <!-- Current Temperature -->
+      <div class="metric-wrapper">
+        <p id="temp">
+          <span id="current-air-temp"><%= data.temp %></span><span class="metric-unit">°F</span>
+        </p>
+      </div>
+
+      <br>
+
+      <!-- Current Pressure & Trending Pressure -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Pressure:</span> <span class="metric-value"><%= data.bar_absolute %></span><span class="metric-unit">"</span> <span class="metric-change">(<%= data.bar_trend_arrow %> <%= data.bar_trend %></span><span class="metric-unit">"</span>)
+        </p>
+      </div>
+
+      <br>
+
+      <!-- Current Dew Point -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Dew Point:</span> <span class="metric-value"><%= data.dew_point %></span><span class="metric-unit">°F</span>
+        </p>
+      </div>
+
+      <!-- Current Humidity -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Humidity:</span> <span class="metric-value"><%= data.hum %></span><span class="metric-unit">%</span>
+        </p>
+      </div>
+
+      <br>
+
+      <!-- Wind Chill -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Wind Chill:</span> <span class="metric-value"><%= data.wind_chill %></span><span class="metric-unit">°F</span>
+        </p>
+      </div>
+
+      <br>
+
+      <!-- Avg. Wind Speed & Direction of the Last 10 Minutes -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Wind:</span> <span class="metric-direction"><%= data.wind_dir_scalar_avg_last_10_min %></span> @ <span class="metric-value"><%= data.wind_speed_avg_last_10_min %></span> <span class="metric-unit">MPH</span>
+        </p>
+      </div>
+
+      <!-- Highest Wind Speed & Direction of the Last 10 Minutes -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Wind Gust:</span> <span class="metric-direction"><%= data.wind_dir_at_hi_speed_last_10_min %></span> @ <span class="metric-value"><%= data.wind_speed_hi_last_10_min %></span> <span class="metric-unit">MPH</span>
+        </p>
+      </div>
+
+      <br>
+
+      <!-- Rainfall over the Last 24 Hours -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Rainfall (24 HR):</span> <span class="metric-value"><%= data.rainfall_last_24_hr_in %></span><span class="metric-unit">"</span>
+        </p>
+      </div>
+
+      <!-- Rainfall for the Month -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Rainfall (Month):</span> <span class="metric-value"><%= data.rainfall_monthly_in %></span><span class="metric-unit">"</span>
+        </p>
+      </div>
+
+      <!-- Rainfall for the Year -->
+      <div class="metric-wrapper">
+        <p>
+          <span class="metric-name">Rainfall (YTD):</span> <span class="metric-value"><%= data.rainfall_year_in %></span><span class="metric-unit">"</span>
+        </p>
+      </div>
+      
+    </main>
+
+    <footer style="margin-top: 3em;">
+      <div>
+        Last Updated On: <%= data.generated_at %>
+      </div>
+    </footer>
+  </body>
+
+</html>
