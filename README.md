@@ -69,7 +69,7 @@ The Node.js KenyonWX project requires several additional environment variables. 
 2. Within the newly created `.env` file, add the content found below. Replace any text contained within `< >` with your own values.
 
   ```
-  MEMCACHIER_SERVERS="localhost:<your_desired_memcached_server_port>"
+  MEMCACHEDCLOUD_SERVERS="localhost:<your_desired_memcached_server_port>"
   PORT=<node.js_port_number_on_localhost>
   WEATHER_LINK_API_KEY="<your_weather_link_v2_api_key>"
   WEATHER_LINK_API_SECRET="<your_weather_link_v2_api_secret>"

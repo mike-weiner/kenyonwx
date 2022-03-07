@@ -14,7 +14,9 @@ const app = express();
 const port = process.env.PORT; // Define the port that our express server will listen on
 
 // Establish connection with memcached server
-var mc = memjs.Client.create(process.env.MEMCACHIER_SERVERS, {
+var mc = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
+  username: process.env.MEMCACHEDCLOUD_USERNAME,
+  password: process.env.MEMCACHEDCLOUD_PASSWORD,
   failover: true,
   timeout: 300, // seconds
   keepAlive: true 
