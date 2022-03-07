@@ -68,12 +68,14 @@ The Node.js KenyonWX project requires several additional environment variables. 
 1. Create a file named `.env` in the project root directory.
 2. Within the newly created `.env` file, add the content found below. Replace any text contained within `< >` with your own values.
 
-    MEMCACHIER_SERVERS="localhost:<your_desired_memcached_server_port>"
-    PORT=<node.js_port_number_on_localhost>
-    WEATHER_LINK_API_KEY="<your_weather_link_v2_api_key>"
-    WEATHER_LINK_API_SECRET="<your_weather_link_v2_api_secret>"
-    WEATHER_LINK_BASE_API_URL="https://api.weatherlink.com/v2/"
-    WEATHER_LINK_STATION_ID=<your_weather_station_id_from_weather_link_account>
+  ```
+  MEMCACHIER_SERVERS="localhost:<your_desired_memcached_server_port>"
+  PORT=<node.js_port_number_on_localhost>
+  WEATHER_LINK_API_KEY="<your_weather_link_v2_api_key>"
+  WEATHER_LINK_API_SECRET="<your_weather_link_v2_api_secret>"
+  WEATHER_LINK_BASE_API_URL="https://api.weatherlink.com/v2/"
+  WEATHER_LINK_STATION_ID=<your_weather_station_id_from_weather_link_account>
+  ```
 
 ### Run Project
 When you are ready to run the project locally, navigate to the directory with this repository's code on your local machine. 
