@@ -33,7 +33,7 @@ In order to run KenyonWX locally, the following will need to be installed on you
   - npm is used to manage the packages needed by KenyonWX to run on top of Node.js
   - **Installation Instructions:** [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [Memcached](https://memcached.org) (optional)
-  - Memcached is an recommended, optional dependency used to cache the API response so prevent an API call from being made on every page visit.
+  - Memcached is a recommended, optional dependency used to cache the API response so prevent an API call from being made on every page visit.
   - **Installation Instructions:** [https://devcenter.heroku.com/articles/memcachier#local-usage](https://devcenter.heroku.com/articles/memcachier#local-usage)
 
 ### Obtain WeatherLink API Key
