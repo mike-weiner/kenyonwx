@@ -71,7 +71,8 @@ async function getCurrentWeatherForStation(stationId) {
   }
 
   // Convert successful API response into a JSON object and return it
-  return responseData;
+  // TO DO: Return to return responseData??
+  return parseWeatherLinkAPIResponse(responseData);
 }
 
 /**
