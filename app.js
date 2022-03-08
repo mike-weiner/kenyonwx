@@ -77,11 +77,15 @@ app.get('/', (req, res) => {
             }
           );
 
+          console.log("MW: HEY");
+
           // Check to see if the error object value is set -> this means the API call resulted in error
           if (weatherLink.weatherData.error != undefined) {
             res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
 
           } else {
+            console.log("MW: DONE!");
+
             // Otherwise return the homepage that will display data
             res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
           }
