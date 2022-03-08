@@ -62,7 +62,6 @@ async function getCurrentWeatherForStation(stationId) {
   apiRequestURL = apiRequestURL + "&api-signature=" + hashedData;
 
   // Make a call to the built API URL
-  console.log("MW: " + apiRequestURL);
   const response = await fetch(apiRequestURL);
   const responseData = await response.json();
 
