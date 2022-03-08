@@ -141,8 +141,6 @@ function getWindDirectionFromDegrees(dir) {
  * @param {Object} data A JSON object containing the Weather Link API response.
  */
  function parseWeatherLinkAPIResponse(data) {
-  weatherData = {};
-
   // Check to see if the API call resulted in a failure
   if (data.code != undefined) {
     weatherData.error = data.code;
