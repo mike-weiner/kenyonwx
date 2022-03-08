@@ -26,7 +26,7 @@ app.use(express.static(__dirname + '/public'));
 app.engine('html', require('ejs').renderFile);
 
 // Server constants
-const KW_LOG_PREFIX = `${new Date().toString()} [KWX]:`;
+const KW_LOG_PREFIX = "[KWX]:";
 const KW_MEMCACHED_KEY = "kwx-data";
 const KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS = 300;
 
