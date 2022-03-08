@@ -11,7 +11,7 @@ h1 {
 
 /* Credit to: https://www.w3schools.com/howto/howto_js_alert.asp */
 .warning {
-  background-color: purple;
+  background-color: #f44336;
   color: white;
   font-weight: bold;
   margin-bottom: 15px;
