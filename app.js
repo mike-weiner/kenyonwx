@@ -47,8 +47,6 @@ app.get('/', (req, res) => {
         // Grab data from cache & parse it into a JSON object
         weatherLink.weatherData = JSON.parse(val);
 
-        console.log("MW: Data from cache = " + JSON.stringify(weatherLink.weatherData));
-
         if (weatherLink.weatherData.error != undefined) { // Check if data had errored when it was requested on API call
           // If so, return the errored view back to the user on the front-end
           res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
@@ -66,17 +64,22 @@ app.get('/', (req, res) => {
           // Parse the data returned from the API call
           weatherLink.parseWeatherLinkAPIResponse(data);
 
-          console.log("MW: WeatherData before sending to cache -- " + JSON.stringify(weatherLink.weatherData));
+          // Store API data into cache
+          mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.weatherData), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
 
-          console.log("MW: HEY");
+            // Callback function after setting data in cache
+            function(err, val){
+              if (err != null && val == null) { // Check for an error when setting data into cache
+                console.log(`${KW_LOG_PREFIX} FAIL: Unable to store parsed data from successful API call: ` + err);
+              }
+            }
+          );
 
           // Check to see if the error object value is set -> this means the API call resulted in error
           if (weatherLink.weatherData.error != undefined) {
             res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
 
           } else {
-            console.log("MW: DONE!");
-
             // Otherwise return the homepage that will display data
             res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
           }
@@ -88,7 +91,7 @@ app.get('/', (req, res) => {
           console.log(`${KW_LOG_PREFIX} FAIL: Failed to get current weather station information: ${error.toString()}`);
 
           // Pass a failed JSON object to parseWeatherLinkAPIResponse()
-          weatherLink.parseWeatherLinkAPIResponse(JSON.parse('{"code": "999"}'));
+          weatherLink.parseWeatherLinkAPIResponse(JSON.parse('{"code": "13"}'));
 
           // Store ERRORED API data into cache
           // This ensures an API call is not made everything the user refreshes the page anytime an error is displayed

@@ -176,20 +176,6 @@ function getWindDirectionFromDegrees(dir) {
       }
     }
   }
-
-  console.log("MW: Data being sent to cache = " + JSON.stringify(weatherData));
-
-  // Store API data into cache
-  mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.weatherData), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
-
-    // Callback function after setting data in cache
-    function(err, val){
-      if (err != null && val == null) { // Check for an error when setting data into cache
-        console.log(`${KW_LOG_PREFIX} FAIL: Unable to store parsed data from successful API call: ` + err);
-      }
-    }
-  );
-
 }
 
 // Set exports for functions to be used in app.js
