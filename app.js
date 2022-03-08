@@ -61,11 +61,7 @@ app.get('/', (req, res) => {
         // Call external API to get re-freshed data
         weatherLink.getCurrentWeatherForStation(process.env.WEATHER_LINK_STATION_ID)
         .then(data => {
-          // Parse the data returned from the API call
-          // TO DO: Remove or restore?
-          // weatherLink.parseWeatherLinkAPIResponse(data);
-
-          // Store API data into cache
+          // Parse the data returned from the API call and store the weather data into cache
           mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.parseWeatherLinkAPIResponse(data)), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
 
             // Callback function after setting data in cache
@@ -91,11 +87,7 @@ app.get('/', (req, res) => {
         .catch(error => {
           console.log(`${KW_LOG_PREFIX} FAIL: Failed to get current weather station information: ${error.toString()}`);
 
-          // Pass a failed JSON object to parseWeatherLinkAPIResponse()
-          // TO DO: Remove/restore
-          // weatherLink.parseWeatherLinkAPIResponse(JSON.parse('{"code": "13"}'));
-
-          // Store ERRORED API data into cache
+          // Pass a failed JSON object to parseWeatherLinkAPIResponse() and store ERRORED weather data into cache
           // This ensures an API call is not made everything the user refreshes the page anytime an error is displayed
           mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.parseWeatherLinkAPIResponse(JSON.parse('{"code": "13"}'))), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
 
