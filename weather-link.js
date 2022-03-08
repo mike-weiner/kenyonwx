@@ -65,7 +65,6 @@ async function getCurrentWeatherForStation(stationId) {
   console.log("MW: " + apiRequestURL);
   const response = await fetch(apiRequestURL);
   const responseData = await response.json();
-  console.log("MW: " + responseData);
 
   // If the response results in error, throw an error with the JSON object as the error message
   if (response.status != 200) {
