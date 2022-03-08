@@ -49,6 +49,7 @@ app.get('/', (req, res) => {
 
         if (weatherLink.weatherData.error != undefined) { // Check if data had errored when it was requested on API call
           // If so, return the errored view back to the user on the front-end
+          console.log("MW: Error from set error on API call");
           res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
           
         } else {
@@ -77,6 +78,8 @@ app.get('/', (req, res) => {
 
           // Check to see if the error object value is set -> this means the API call resulted in error
           if (weatherLink.weatherData.error != undefined) {
+            console.log("MW2: " + weatherLink.weatherData);
+            console.log("MW2: Error from set after API call");
             res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
 
           } else {
@@ -104,6 +107,7 @@ app.get('/', (req, res) => {
           );
 
           // Return the error view to the front-end user
+          console.log("MW3: " + weatherLink.weatherData);
           res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
         });
 
@@ -111,6 +115,8 @@ app.get('/', (req, res) => {
       }
     }
   )
+
+  console.log("MW1: " + weatherLink.weatherData);
 });
 
 // Catch all other random requests
