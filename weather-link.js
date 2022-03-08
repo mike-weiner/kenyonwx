@@ -71,8 +71,7 @@ async function getCurrentWeatherForStation(stationId) {
   }
 
   // Convert successful API response into a JSON object and return it
-  // TO DO: Return to return responseData??
-  return parseWeatherLinkAPIResponse(responseData);
+  return responseData;
 }
 
 /**
@@ -177,6 +176,8 @@ function getWindDirectionFromDegrees(dir) {
       }
     }
   }
+
+  return weatherData;
 }
 
 // Set exports for functions to be used in app.js
