@@ -148,7 +148,7 @@ function getWindDirectionFromDegrees(dir) {
   } else { // Otherwise, the API call was successful, so parse the data
 
     // Parse "generated_at" date from the JSON response and store it into weatherData
-    weatherData.generated_at = new Date(data.generated_at * 1000).toLocaleString();
+    weatherData.generated_at = new Date(data.generated_at * 1000).toString();
 
     // Iterate over every sensor in the data response to parse data
     for (let sensor in data.sensors) {
