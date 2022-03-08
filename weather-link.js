@@ -177,7 +177,7 @@ function getWindDirectionFromDegrees(dir) {
     }
   }
 
-  console.log("MW: Data being sent to cache = " + JSON.stringify(weatherLink.weatherData));
+  console.log("MW: Data being sent to cache = " + JSON.stringify(weatherData));
 
 }
 
