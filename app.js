@@ -83,6 +83,8 @@ app.get('/', (req, res) => {
             // Otherwise return the homepage that will display data
             res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
           }
+
+          console.log(`${KW_LOG_PREFIX} Weather Link API contacted.`);
           
         })
         .catch(error => {
@@ -106,8 +108,6 @@ app.get('/', (req, res) => {
           // Return the error view to the front-end user
           res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
         });
-
-        console.log(`${KW_LOG_PREFIX} Weather Link API contacted.`);
       }
     }
   )
