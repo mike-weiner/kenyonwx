@@ -1,18 +1,21 @@
 {
   "name": "kenyonwx",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Display's the current weather conditions from a Davis Instruments weather station near Kenyon, MN.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "author": "Michael Weiner",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "memjs": "^1.3.0"
+  },
+  "engines": {
+    "node": "17.x"
   }
 }
