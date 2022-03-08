@@ -66,8 +66,6 @@ app.get('/', (req, res) => {
           // Parse the data returned from the API call
           weatherLink.parseWeatherLinkAPIResponse(data);
 
-          console.log("MW: Data being sent to cache = " + JSON.stringify(weatherLink.weatherData));
-
           // Store API data into cache
           mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.weatherData), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
 
