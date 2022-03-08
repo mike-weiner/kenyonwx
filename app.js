@@ -47,8 +47,6 @@ app.get('/', (req, res) => {
         // Grab data from cache & parse it into a JSON object
         weatherLink.weatherData = JSON.parse(val);
 
-        console.log("MW: Data from cache = " + JSON.stringify(weatherLink.weatherData));
-
         if (weatherLink.weatherData.error != undefined) { // Check if data had errored when it was requested on API call
           // If so, return the errored view back to the user on the front-end
           res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
@@ -65,8 +63,6 @@ app.get('/', (req, res) => {
         .then(data => {
           // Parse the data returned from the API call
           weatherLink.parseWeatherLinkAPIResponse(data);
-
-          console.log("MW: Data being sent to cache = " + JSON.stringify(weatherLink.weatherData));
 
           // Store API data into cache
           mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.weatherData), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
