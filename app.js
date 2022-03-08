@@ -44,16 +44,14 @@ app.get('/', (req, res) => {
     function(err, val) {
 
       if (err == null && val != null) { // Data is in the memcached server
-        // Grab data from cache & parse it into a JSON object
-        weatherLink.weatherData = JSON.parse(val);
-
-        if (weatherLink.weatherData.error != undefined) { // Check if data had errored when it was requested on API call
+        
+        if (JSON.parse(val).error != undefined) { // Check if data had errored when it was requested on API call
           // If so, return the errored view back to the user on the front-end
-          res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
+          res.render(path.join(__dirname, '/views/error.html'), {data:JSON.parse(val)});
           
         } else {
           // Otherwise, return the homepage that will display data
-          res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
+          res.render(path.join(__dirname, '/views/index.html'), {data:JSON.parse(val)});
         }
 
       } else { // Data is not in memcached server (or it has expired), so let's set (or renew) it
