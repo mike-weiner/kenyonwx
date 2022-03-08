@@ -68,21 +68,20 @@ app.get('/', (req, res) => {
             function(err, val){
               if (err != null && val == null) { // Check for an error when setting data into cache
                 console.log(`${KW_LOG_PREFIX} FAIL: Unable to store parsed data from successful API call: ` + err);
+              } else { // Otherwise, refresh view with new data
+                // Check to see if the error object value is set -> this means the API call resulted in error
+                if (weatherLink.weatherData.error != undefined) {
+                  res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
+
+                } else {
+                  // Otherwise return the homepage that will display data
+                  res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
+                }
               }
             }
           );
 
-          // Check to see if the error object value is set -> this means the API call resulted in error
-          if (weatherLink.weatherData.error != undefined) {
-            res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
-
-          } else {
-            // Otherwise return the homepage that will display data
-            res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
-          }
-
           console.log(`${KW_LOG_PREFIX} Weather Link API contacted.`);
-          
         })
         .catch(error => {
           console.log(`${KW_LOG_PREFIX} FAIL: Failed to get current weather station information: ${error.toString()}`);
