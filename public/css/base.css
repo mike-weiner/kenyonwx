@@ -9,6 +9,15 @@ h1 {
   font-weight: 100;
 }
 
+/* Credit to: https://www.w3schools.com/howto/howto_js_alert.asp */
+.warning {
+  background-color: purple;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+
 .metric-name {
   font-weight: 300;
 }
