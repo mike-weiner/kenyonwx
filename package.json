@@ -1,6 +1,6 @@
 {
   "name": "kenyonwx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Display's the current weather conditions from a Davis Instruments weather station near Kenyon, MN.",
   "main": "app.js",
   "scripts": {
