@@ -43,15 +43,22 @@ app.get('/', (req, res) => {
     // Callback function after attempting to get KW_MEMCACHED_KEY from memcached server
     function(err, val) {
 
-      if (err == null && val != null) { // Data is in the memcached server
-        
-        if (JSON.parse(val).error != undefined) { // Check if data had errored when it was requested on API call
-          // If so, return the errored view back to the user on the front-end
-          res.render(path.join(__dirname, '/views/error.html'), {data:JSON.parse(val)});
+      // Data is in the memcached server
+      if (err == null && val != null) { 
+
+        // Pase the result from cache into a JSON object
+        var jsonWeatherDataObject = JSON.parse(val);
+
+        // Check if the weather data had errored out when it was requested on the original API call
+        if (jsonWeatherDataObject.error != undefined) {
+          
+          // If so, return the error to the user on the front-end
+          res.render(path.join(__dirname, '/views/error.html'), {data: jsonWeatherDataObject});
           
         } else {
-          // Otherwise, return the homepage that will display data
-          res.render(path.join(__dirname, '/views/index.html'), {data:JSON.parse(val)});
+
+          // Otherwise, return the homepage that will display weather data
+          res.render(path.join(__dirname, '/views/index.html'), {data: jsonWeatherDataObject});
         }
 
       } else { // Data is not in memcached server (or it has expired), so let's set (or renew) it
@@ -60,20 +67,25 @@ app.get('/', (req, res) => {
         weatherLink.getCurrentWeatherForStation(process.env.WEATHER_LINK_STATION_ID)
         .then(data => {
           // Parse the data returned from the API call and store the weather data into cache
-          mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.parseWeatherLinkAPIResponse(data)), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
+          mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.parseWeatherLinkAPIResponse(data)), {expires: KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
 
             // Callback function after setting data in cache
             function(err, val){
-              if (err != null && val == null) { // Check for an error when setting data into cache
+              
+              // Check for an error when setting data into cache
+              if (err != null && val == null) {
                 console.log(`${KW_LOG_PREFIX} FAIL: Unable to store parsed data from successful API call: ` + err);
-              } else { // Otherwise, refresh view with new data
-                // Check to see if the error object value is set -> this means the API call resulted in error
+
+              } else { // Otherwise, refresh front-end view with new data
+                
+                // Check to see if the error object value is set
                 if (weatherLink.weatherData.error != undefined) {
-                  res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
+                  // If so, return the error to the user on the front-end
+                  res.render(path.join(__dirname, '/views/error.html'), {data: weatherLink.weatherData});
 
                 } else {
-                  // Otherwise return the homepage that will display data
-                  res.render(path.join(__dirname, '/views/index.html'), {data:weatherLink.weatherData});
+                  // Otherwise, return the homepage that will display weather data
+                  res.render(path.join(__dirname, '/views/index.html'), {data: weatherLink.weatherData});
                 }
               }
             }
@@ -85,19 +97,21 @@ app.get('/', (req, res) => {
           console.log(`${KW_LOG_PREFIX} FAIL: Failed to get current weather station information: ${error.toString()}`);
 
           // Pass a failed JSON object to parseWeatherLinkAPIResponse() and store ERRORED weather data into cache
-          // This ensures an API call is not made everything the user refreshes the page anytime an error is displayed
-          mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.parseWeatherLinkAPIResponse(JSON.parse('{"code": "13"}'))), {expires:KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
+          // This ensures an API call is not made every time the user refreshes the page when an error is displayed
+          mc.set(KW_MEMCACHED_KEY, JSON.stringify(weatherLink.parseWeatherLinkAPIResponse(JSON.parse('{"code": "13"}'))), {expires: KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS}, 
 
             // Callback function after setting data in cache
             function(err, val){
-              if (err != null && val == null) { // Check for an error when setting data into cache
+
+              // Check for an error when setting data into cache
+              if (err != null && val == null) {
                 console.log(`${KW_LOG_PREFIX} FAIL: Unable to store parsed data from failed API call: ${err}`);
               }
             }
           );
 
-          // Return the error view to the front-end user
-          res.render(path.join(__dirname, '/views/error.html'), {data:weatherLink.weatherData});
+          // Return the error to the user on the front-end
+          res.render(path.join(__dirname, '/views/error.html'), {data: weatherLink.weatherData});
         });
       }
     }
