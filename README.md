@@ -69,8 +69,8 @@ The Node.js KenyonWX project requires several additional environment variables. 
 2. Within the newly created `.env` file, add the content found below. Replace any text contained within `< >` with your own values.
 
   ```
-  MEMCACHEDCLOUD_SERVERS="localhost:<your_desired_memcached_server_port>"
-  PORT=<node.js_port_number_on_localhost>
+  MEMCACHEDCLOUD_SERVERS="<host>:<memcached_server_port>"
+  PORT=<desired_webserver_port>
   WEATHER_LINK_API_KEY="<your_weather_link_v2_api_key>"
   WEATHER_LINK_API_SECRET="<your_weather_link_v2_api_secret>"
   WEATHER_LINK_BASE_API_URL="https://api.weatherlink.com/v2/"
@@ -88,10 +88,10 @@ Start the KenyonWX web app by running:
 
     npm run start
 
-Visit **localhost:<node.js_port_number_on_localhost>/** to view the weather information pulled from your weather station.
+Visit **localhost:<desired_webserver_port>/** to view the weather information pulled from your weather station.
 
 ## Modifying What Weather Data is Displayed
-You can easily change what weather data is pulled from your WeatherLink weather station by modifying `parseWeatherLinkAPIResponse(data)` within `weather-link.js`. 
+You can easily change what weather data is pulled from your WeatherLink weather station by modifying `parseWeatherLinkAPIResponse(data)` within `weather-link-utils.js`. 
 
 You will then also need to update the `views/index.html` view with the updated data that you are pulling from the WeatherLink API response.
 
