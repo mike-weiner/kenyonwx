@@ -54,7 +54,9 @@ function getApiUrlForCurrentStationWeather(stationId) {
  * @return {string} The string ↑ or ↓ depending on whether pressure was positive or negative.
  */
 function getPressureTrendArrow(pressure) {
-  if (pressure > 0) {
+  if (!pressure) {
+    return "--"
+  } else if (pressure > 0) {
     return "↑";
   } else {
     return "↓";
@@ -121,8 +123,8 @@ function getWindDirectionFromDegrees(dir) {
     // Iterate over every sensor in the data response to parse data
     for (let sensor in data.sensors) {
 
-      // Vantage Pro2 Plus Sensor = 45
-      if (data.sensors[sensor].sensor_type == 45) {
+      // Vantage Vue ISS = 37
+      if (data.sensors[sensor].sensor_type == 37) {
         weatherDataToReturn.temp = data.sensors[sensor].data[0].temp;
         weatherDataToReturn.dew_point = data.sensors[sensor].data[0].dew_point;
         weatherDataToReturn.hum = data.sensors[sensor].data[0].hum;
@@ -139,8 +141,9 @@ function getWindDirectionFromDegrees(dir) {
       // Barometer Sensor = 242
       if (data.sensors[sensor].sensor_type == 242) {
         weatherDataToReturn.bar_absolute = data.sensors[sensor].data[0].bar_absolute;
+        weatherDataToReturn.bar_sea_level = data.sensors[sensor].data[0].bar_sea_level;
         weatherDataToReturn.bar_trend_arrow = getPressureTrendArrow(data.sensors[sensor].data[0].bar_trend);
-        weatherDataToReturn.bar_trend = Math.abs(data.sensors[sensor].data[0].bar_trend);
+        weatherDataToReturn.bar_trend = data.sensors[sensor].data[0].bar_trend ? Math.abs(data.sensors[sensor].data[0].bar_trend) : "--";
       }
     }
   }
