@@ -75,6 +75,7 @@ The Node.js KenyonWX project requires several additional environment variables. 
   WEATHER_LINK_API_SECRET="<your_weather_link_v2_api_secret>"
   WEATHER_LINK_BASE_API_URL="https://api.weatherlink.com/v2/"
   WEATHER_LINK_STATION_ID=<your_weather_station_id_from_weather_link_account>
+  WEATHER_LINK_SUMMARY_URL=<your_weather_station_weather_link_live_summary_url>
   ```
 
 ### Run Project
