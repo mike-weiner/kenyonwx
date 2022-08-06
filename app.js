@@ -50,9 +50,9 @@ app.get('/', (req, res) => {
         if (jsonWeatherDataObject.error != undefined) {
           
           // If so, return the error to the user on the front-end
-          res.render(path.join(__dirname, '/views/error.html'), {data: jsonWeatherDataObject});
+          res.render(path.join(__dirname, '/views/error.html'), {data: jsonWeatherDataObject, weatherLinkSummaryURL: process.env.WEATHER_LINK_SUMMARY_URL});
         } else {
-          res.render(path.join(__dirname, '/views/index.html'), {data: jsonWeatherDataObject});
+          res.render(path.join(__dirname, '/views/index.html'), {data: jsonWeatherDataObject, weatherLinkSummaryURL: process.env.WEATHER_LINK_SUMMARY_URL});
         }
 
       } else { // Data is not in memcached server (or it has expired), so let's set (or renew) it
@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 
                 } else {
                   // Otherwise, return the homepage that will display weather data
-                  res.render(path.join(__dirname, '/views/index.html'), {data: parsedWeatherData});
+                  res.render(path.join(__dirname, '/views/index.html'), {data: parsedWeatherData, weatherLinkSummaryURL: process.env.WEATHER_LINK_SUMMARY_URL});
                 }
               }
             }
