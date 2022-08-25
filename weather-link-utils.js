@@ -28,9 +28,7 @@ function getApiUrlForCurrentStationWeather(stationId) {
     "t": String(Math.round(Date.now() / 1000))
   }
 
-  // String that will store the API Signature
   var apiSignature = "";
-
   for (const key in signature_parameters) {
     apiSignature = apiSignature + key + signature_parameters[key]
   }
@@ -39,11 +37,15 @@ function getApiUrlForCurrentStationWeather(stationId) {
   var hashedData = hmac.update(apiSignature).digest('hex');
 
   var apiRequestURL = BASE_URL + endpoint + "?";
-  for (const key in uri_parameters) {
-    apiRequestURL = apiRequestURL + "&" + key + "=" + uri_parameters[key];
-  }
+  Object.keys(uri_parameters).forEach((key, index) => {
+    if (index === 0) {
+      apiRequestURL = apiRequestURL + key + "=" + uri_parameters[key];
+    } else {
+      apiRequestURL = apiRequestURL + "&" + key + "=" + uri_parameters[key];
+    }
+  });
+  
   apiRequestURL = apiRequestURL + "&api-signature=" + hashedData;
-
   return apiRequestURL;
 }
 
