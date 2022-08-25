@@ -108,3 +108,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 - [WeatherLink Developer Portal](https://weatherlink.github.io)
 - [WeatherLink Portal](https://www.weatherlink.com)
 - [Stackoverflow: Converting Wind direction from degrees to text](https://stackoverflow.com/questions/61077150/converting-wind-direction-from-degrees-to-text)
+- [Redirect HTTP to HTTPS](https://www.javaniceday.com/post/redirect-all-requests-from-http-to-https-in-node-js-and-express)

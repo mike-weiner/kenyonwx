@@ -31,9 +31,33 @@ const KW_LOG_PREFIX = "[KWX]:";
 const KW_MEMCACHED_KEY = "kwx-data";
 const KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS = 300;
 
+/**
+ * A helper function to determine if the incoming request is secure.
+ * Credit to: https://www.javaniceday.com/post/redirect-all-requests-from-http-to-https-in-node-js-and-express
+ * 
+ * @param {Object} Incoming request to the server
+ * @returns {boolean} Returns true if the http request is secure (comes form https), false otherwise
+ */
+ function isSecure(req) {
+  if (req.headers['x-forwarded-proto']) {
+    return req.headers['x-forwarded-proto'] === 'https';
+  }
+  return req.secure;
+};
+
 // Set server to listen on specified port
 app.listen(port, () => {
   console.log(`${KW_LOG_PREFIX} Server is live at http://localhost:${port}/`)
+});
+
+// Automatically redirect any page form http to https
+// Credit to https://www.javaniceday.com/post/redirect-all-requests-from-http-to-https-in-node-js-and-express
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production' && !isSecure(req)) {
+    res.redirect(301, `https://${req.headers.host}${req.url}`);
+  } else {
+    next();
+  }
 });
 
 // ROUTE: /
