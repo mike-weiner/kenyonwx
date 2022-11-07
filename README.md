@@ -19,7 +19,7 @@ KenyonWX is a Node.js app to display desired weather data from a weather station
 ## Built Using
 KenyonWX was built using:
 - [Memcached](https://memcached.org) (v1.6.14+)
-- [Node.js](https://nodejs.dev) (v17.4.0+)
+- [Node.js](https://nodejs.dev) (v18.0.0+)
 
 ## Running KenyonWX Locally
 It is easy to get a copy of KenyonWX running locally.
