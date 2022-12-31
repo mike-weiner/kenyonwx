@@ -16,10 +16,6 @@
 
   <body>
     <header>
-      <!-- Credit to: https://www.w3schools.com/howto/howto_js_alert.asp -->
-      <div class="info">
-        This weather station is currently located in Rochester, MN and will be moved to the Kenyon, MN area in the coming months.
-      </div>
     </header>
     <main>
 
@@ -39,10 +35,10 @@
       <!-- Current Pressure & Trending Pressure -->
       <div class="metric-wrapper">
         <p>
-          <span class="metric-name">Absolute Pressure:</span> <span class="metric-value"><%= data.bar_absolute %></span><span class="metric-unit">"</span> <span class="metric-change">(<%= data.bar_trend_arrow %> <%= data.bar_trend %></span><span class="metric-unit">"</span>)
+          <span class="metric-name">Absolute Pressure:</span> <span class="metric-value"><%= data.bar_absolute %></span><span class="metric-unit">"</span> <span class="metric-change">(<%= data.bar_trend_arrow %> <%= data.bar_trend %></span><span class="metric-unit">")</span>
         </p>
         <p>
-          <span class="metric-name">Relative Pressure:</span> <span class="metric-value"><%= data.bar_sea_level %></span><span class="metric-unit">"</span> <span class="metric-change">(<%= data.bar_trend_arrow %> <%= data.bar_trend %></span><span class="metric-unit">"</span>)
+          <span class="metric-name">Relative Pressure:</span> <span class="metric-value"><%= data.bar_sea_level %></span><span class="metric-unit">"</span> <span class="metric-change">(<%= data.bar_trend_arrow %> <%= data.bar_trend %></span><span class="metric-unit">")</span>
         </p>
       </div>
 

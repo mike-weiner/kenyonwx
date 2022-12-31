@@ -10,14 +10,6 @@ h1 {
 }
 
 /* Credit to: https://www.w3schools.com/howto/howto_js_alert.asp */
-.warning {
-  background-color: #f44336;
-  color: white;
-  font-weight: bold;
-  margin-bottom: 15px;
-  padding: 20px;
-}
-
 .info {
   background-color: #2196F3;
   color: white;
@@ -42,6 +34,19 @@ h1 {
   font-weight: 500;
 }
 
+#current-air-temp, .metric-change, .metric-value, .metric-unit {
+  font-weight: normal;
+}
+
 #temp {
   font-size: 3.5em;
+}
+
+/* Credit to: https://www.w3schools.com/howto/howto_js_alert.asp */
+.warning {
+  background-color: #f44336;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 20px;
 }
