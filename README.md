@@ -19,16 +19,16 @@ KenyonWX is a Node.js app to display desired weather data from a weather station
 ## Built Using
 KenyonWX was built using:
 - [Memcached](https://memcached.org) (v1.6.14+)
-- [Node.js](https://nodejs.dev) (v18.0.0+)
+- [Next.js](https://nextjs.org) (v13.4.0+)
 
 ## Running KenyonWX Locally
 It is easy to get a copy of KenyonWX running locally.
 
 ### Install Dependencies
 In order to run KenyonWX locally, the following will need to be installed on your development environment:
-- [Node.js](https://nodejs.dev) (required)
-  - Node.js is required to run KenyonWX
-  - **Installation Instructions:** [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
+- [Next.js](https://nextjs.org) (required)
+  - Next.js is required to run KenyonWX
+  - **Installation Instructions:** [https://nextjs.org/docs/getting-started/installation](https://nextjs.org/docs/getting-started/installation)
 - [npm](https://www.npmjs.com) (required)
   - npm is used to manage the packages needed by KenyonWX to run on top of Node.js
   - **Installation Instructions:** [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
@@ -65,8 +65,8 @@ If you plan on running this code in a production environment, ensure that all of
 
 #### Set Project Environment Variables
 The Node.js KenyonWX project requires several additional environment variables. Set the values of these variables:
-1. Create a file named `.env` in the project root directory.
-2. Within the newly created `.env` file, add the content found below. Replace any text contained within `< >` with your own values.
+1. Create a file named `.env.local` in the project root directory.
+2. Within the newly created `.env.local` file, add the content found below. Replace any text contained within `< >` with your own values.
 
   ```
   MEMCACHEDCLOUD_SERVERS="<host>:<memcached_server_port>"
@@ -87,14 +87,14 @@ If you have installed memcached on your local machine, start your local memcache
 
 Start the KenyonWX web app by running:
 
-    npm run start
+    npm run dev
 
 Visit **localhost:<desired_webserver_port>/** to view the weather information pulled from your weather station.
 
 ## Modifying What Weather Data is Displayed
-You can easily change what weather data is pulled from your WeatherLink weather station by modifying `parseWeatherLinkAPIResponse(data)` within `weather-link-utils.js`. 
+You can easily change what weather data is pulled from your WeatherLink weather station by modifying `parseWeatherLinkAPIResponse(data)` within `/src/utils/weather-link.js`. 
 
-You will then also need to update the `views/index.html` view with the updated data that you are pulling from the WeatherLink API response.
+You will then also need to update the `/src/pages/index.js` view with the updated data that you are pulling from the WeatherLink API response.
 
 Information about what type of weather data is available within the WeatherLink API from different weather stations and sensors can be found here: [https://weatherlink.github.io/v2-api/interactive-sensor-catalog](https://weatherlink.github.io/v2-api/interactive-sensor-catalog).
 
@@ -108,4 +108,3 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 - [WeatherLink Developer Portal](https://weatherlink.github.io)
 - [WeatherLink Portal](https://www.weatherlink.com)
 - [Stackoverflow: Converting Wind direction from degrees to text](https://stackoverflow.com/questions/61077150/converting-wind-direction-from-degrees-to-text)
-- [Redirect HTTP to HTTPS](https://www.javaniceday.com/post/redirect-all-requests-from-http-to-https-in-node-js-and-express)
