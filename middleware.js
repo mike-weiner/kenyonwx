@@ -1,15 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request) {
-  const headers = new Headers(request.headers);
+export function middleware(req, ev) {
+    if (process.env.NODE_ENV === 'production' && req.headers.get('x-forwarded-proto') !== 'https') {
+        return NextResponse.redirect(`https://${req.headers.get('host')}${req.nextUrl.pathname}`, 301);
+    }
 
-  const currentEnv = process.env.NODE_ENV;
-  const isHttps = headers.get("x-forwarded-proto")?.split(",")[0] === "https";
-  const isLocalhost = request.headers.get("host")?.includes("localhost");
-
-  if (currentEnv === "production" && !isHttps && !isLocalhost) {
-    const newUrl = new URL(`https://${headers.get("host")}` || "");
-    newUrl.protocol = "https:";
-    return NextResponse.redirect(newUrl.href, 301);
-  }
+    return NextResponse.next();
 }
