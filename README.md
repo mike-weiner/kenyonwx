@@ -1,6 +1,6 @@
 # KenyonWX
 
-KenyonWX is a Node.js app to display desired weather data from a weather station connected to your [WeatherLink](https://www.weatherlink.com) account in a clean, simple fashion.
+KenyonWX is a Next.js app to display desired weather data from a weather station connected to your [WeatherLink](https://www.weatherlink.com) account in a clean, simple fashion.
 
 ## Table of Contents
 - [Built Using](#built-using)
@@ -65,7 +65,7 @@ This project assumes that you are running in a `development` environment. Ensure
 If you plan on running this code in a production environment, ensure that all of the project environment variables defined in [Set Project Environment Variables](#set-project-environment-variables) are set within your production environment.
 
 #### Set Project Environment Variables
-The Node.js KenyonWX project requires several additional environment variables. Set the values of these variables:
+The Next.js KenyonWX project requires several additional environment variables. Set the values of these variables:
 1. Create a file named `.env.local` in the project root directory.
 2. Within the newly created `.env.local` file, add the content found below. Replace any text contained within `< >` with your own values.
 
