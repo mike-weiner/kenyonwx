@@ -1,4 +1,4 @@
-import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export function middleware(req, ev) {
     if (process.env.NODE_ENV === 'production' && (!req.headers.get('x-forwarded-proto').includes('https') || !req.headers.get('x-forwarded-proto') !== 'https')) {
