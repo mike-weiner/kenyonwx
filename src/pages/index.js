@@ -40,8 +40,8 @@ export default function Homepage(props) {
 
     setWindData(
       [
-        { name: 'Wind', stat: props.wxData.wind_dir_at_hi_speed_last_10_min + " @ " + props.wxData.wind_speed_hi_last_10_min, unit: ' MPH' },
-        { name: 'Wind Gust', stat: props.wxData.wind_dir_scalar_avg_last_10_min + " @ " + props.wxData.wind_speed_avg_last_10_min, unit: ' MPH' },
+        { name: 'Wind', stat: props.wxData.wind_dir_scalar_avg_last_10_min + " @ " + props.wxData.wind_speed_avg_last_10_min, unit: ' MPH' },
+        { name: 'Wind Gust', stat: props.wxData.wind_dir_at_hi_speed_last_10_min + " @ " + props.wxData.wind_speed_hi_last_10_min, unit: ' MPH' },
         { name: 'Wind Chill', stat: props.wxData.wind_chill, unit: '°F' }
       ]
     );
