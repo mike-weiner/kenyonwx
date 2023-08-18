@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import StatPack from '../components/Packs/StatPack';
 import BottomBanner from '../components/BottomBanner';
 import FailureDialog from '../components/Dialog/Nondismissable/Failure';
+import WideSlideover from '../components/Slideover/Wide';
 
 const axios = require('axios');
 const memjs = require('memjs');
@@ -12,6 +13,9 @@ const weatherLinkUtil = require("../utils/weather-link.js");
 
 export default function Homepage(props) {
   const [fetchingData, setFetchingData] = useState(true);
+
+  const [openDebugSlideover, setOpenDebugSlideover] = useState(false);
+  const closeDebugSlideover = () => setOpenDebugSlideover(false);
 
   const [temp, setTemp] = useState(0.0);
   const [pressureData, setPressureData] = useState([]);
@@ -86,7 +90,9 @@ export default function Homepage(props) {
       <div className="p-8 pb-24 space-y-8">
         <div className="md:flex md:items-center md:justify-between">
           <div className="min-w-0 flex-1">
-            <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+              onClick={() => setOpenDebugSlideover(true)}
+            >
               Kenyon, MN
             </h1>
           </div>
@@ -102,7 +108,17 @@ export default function Homepage(props) {
                 <p className="inline-flex items-center rounded-md  py-2 text-3xl">{temp}</p>
             }
           </div>
-        </div>
+        </div> 
+
+        <WideSlideover 
+          open={openDebugSlideover}
+          onClose={closeDebugSlideover}
+          title="Debug Data"
+        >
+          <pre>
+            {JSON.stringify(props.wxData, null, 2)}
+          </pre>
+        </WideSlideover>
 
         <StatPack
           isLoading={fetchingData}
