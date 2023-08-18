@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { XCircleIcon } from '@heroicons/react/24/outline'
 
 export default function WideSlideover(props) {
   const [open, setOpen] = useState(false);
@@ -11,7 +11,7 @@ export default function WideSlideover(props) {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-10" onClose={props.onClose}>
         <div className="fixed inset-0" />
 
         <div className="fixed inset-0 overflow-hidden">
@@ -33,15 +33,15 @@ export default function WideSlideover(props) {
                         <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
                           {props.title || "Panel Title"}
                         </Dialog.Title>
-                        <div className="ml-3 flex h-7 items-center">
+                        <div className="ml-3 flex items-center">
                           <button
                             type="button"
-                            className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="relative rounded-md bg-white text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                             onClick={props.onClose}
                           >
                             <span className="absolute -inset-2.5" />
                             <span className="sr-only">Close panel</span>
-                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            <XCircleIcon className="h-6 w-6" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
