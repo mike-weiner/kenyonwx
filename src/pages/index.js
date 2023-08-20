@@ -17,7 +17,7 @@ export default function Homepage(props) {
   const [openDebugSlideover, setOpenDebugSlideover] = useState(false);
   const closeDebugSlideover = () => setOpenDebugSlideover(false);
 
-  const [temp, setTemp] = useState(0.0);
+  const [temperatureData, setTemperatureData] = useState([]);
   const [pressureData, setPressureData] = useState([]);
   const [waterContentData, setWaterContentData] = useState([]);
   const [windData, setWindData] = useState([]);
@@ -27,6 +27,13 @@ export default function Homepage(props) {
     if (props.error.title !== "") {
       return;
     }
+
+    setTemperatureData(
+      [
+        { name: 'Temperature', stat: props.wxData.temp, unit: '°F' },
+        { name: 'Heat Index', stat: props.wxData.heat_index, unit: '°F' },
+      ]
+    );
 
     setPressureData(
       [
@@ -57,8 +64,6 @@ export default function Homepage(props) {
         { name: 'Rainfall (YTD)', stat: props.wxData.rainfall_year_in, unit: '"' },
       ]
     );
-
-    setTemp(props.wxData.temp + "°F")
 
     setFetchingData(false)
   }, []);
@@ -105,12 +110,12 @@ export default function Homepage(props) {
                   </div>
                 </div>
                 :
-                <p className="inline-flex items-center rounded-md  py-2 text-3xl">{temp}</p>
+                <p className="inline-flex items-center rounded-md  py-2 text-3xl">{temperatureData[0].stat + temperatureData[0].unit}</p>
             }
           </div>
-        </div> 
+        </div>
 
-        <WideSlideover 
+        <WideSlideover
           open={openDebugSlideover}
           onClose={closeDebugSlideover}
           title="Debug Data"
@@ -122,14 +127,8 @@ export default function Homepage(props) {
 
         <StatPack
           isLoading={fetchingData}
-          stats={pressureData}
-          title="Atmospheric Pressure"
-        />
-
-        <StatPack
-          isLoading={fetchingData}
-          stats={waterContentData}
-          title="Atmospheric Water Content"
+          stats={temperatureData}
+          title="Outdoor Temperatures"
         />
 
         <StatPack
@@ -142,6 +141,18 @@ export default function Homepage(props) {
           isLoading={fetchingData}
           stats={precipData}
           title="Precipitation"
+        />
+
+        <StatPack
+          isLoading={fetchingData}
+          stats={waterContentData}
+          title="Atmospheric Water Content"
+        />
+
+        <StatPack
+          isLoading={fetchingData}
+          stats={pressureData}
+          title="Atmospheric Pressure"
         />
 
         {
@@ -190,7 +201,7 @@ export async function getServerSideProps(context) {
     }
   } catch (err) {
     console.log(KW_LOG_PREFIX + "Failure to Query Cache", err);
-    
+
     return {
       props: {
         wxData: {},
@@ -216,7 +227,7 @@ export async function getServerSideProps(context) {
       );
     } catch (err) {
       console.log(KW_LOG_PREFIX + "Failure Making WL API Query", err)
-      
+
       return {
         props: {
           wxData: {},
@@ -232,7 +243,7 @@ export async function getServerSideProps(context) {
       var parsedWeatherData = weatherLinkUtil.parseWeatherLinkAPIResponse(res.data);
 
       let dataToCache = {
-        wxData: parsedWeatherData, 
+        wxData: parsedWeatherData,
         error: error,
       }
 

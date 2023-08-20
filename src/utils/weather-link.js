@@ -58,6 +58,7 @@ function getWindDirectionFromDegrees(dir) {
       // Vantage Vue ISS = 37
       if (data.sensors[sensor].sensor_type == 37) {
         weatherDataToReturn.temp = data.sensors[sensor].data[0].temp;
+        weatherDataToReturn.heat_index = data.sensors[sensor].data[0].heat_index;
         weatherDataToReturn.dew_point = data.sensors[sensor].data[0].dew_point;
         weatherDataToReturn.hum = data.sensors[sensor].data[0].hum;
         weatherDataToReturn.wind_chill = data.sensors[sensor].data[0].wind_chill;
