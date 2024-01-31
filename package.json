@@ -16,7 +16,7 @@
   "author": "Michael Weiner",
   "license": "MIT",
   "engines": {
-    "node": "20.x"
+    "node": "21.x"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
