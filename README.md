@@ -6,11 +6,10 @@ KenyonWX is a Next.js app to display desired weather data from a weather station
 - [Built Using](#built-using)
 - [Running KenyonWX Locally](#running-kenyonwx-locally)
   - [Install Dependencies](#install-dependencies)
-  - [Obtain WeatherLink API Key](#obtain-weatherlink-api-key)
+  - [Obtain a WeatherLink API Key](#obtain-a-weatherlink-api-key)
   - [Clone Repo](#clone-repo)
-  - [Install npm Packages](#install-npm-packages)
   - [Create Environmental Variables Required by the Project](#create-environmental-variables-required-by-the-project)
-  - [Run Project](#run-project)
+  - [Run the Project](#run-the-project)
   -[Modifying What Weather Data is Displayed](#modifying-what-weather-data-is-displayed)
 - [Contributing](#contributing)
 - [License](#license)
@@ -18,26 +17,20 @@ KenyonWX is a Next.js app to display desired weather data from a weather station
 
 ## Built Using
 KenyonWX was built using:
-- [Memcached](https://memcached.org) (v1.6.14+)
-- [Next.js](https://nextjs.org) (v13.4.0+)
-- [Tailwind CSS](https://tailwindcss.com) (v3.3.0+)
+- [Memcached](https://memcached.org) (v1.6.29+)
+- [Next.js](https://nextjs.org) (v14.2.0+)
+- [Tailwind CSS](https://tailwindcss.com) (v3.4.0+)
 
 ## Running KenyonWX Locally
 It is easy to get a copy of KenyonWX running locally.
 
 ### Install Dependencies
 In order to run KenyonWX locally, the following will need to be installed on your development environment:
-- [Next.js](https://nextjs.org) (required)
-  - Next.js is required to run KenyonWX
-  - **Installation Instructions:** [https://nextjs.org/docs/getting-started/installation](https://nextjs.org/docs/getting-started/installation)
-- [npm](https://www.npmjs.com) (required)
-  - npm is used to manage the packages needed by KenyonWX to run on top of Node.js
-  - **Installation Instructions:** [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [Memcached](https://memcached.org) (optional)
-  - Memcached is a recommended, optional dependency used to cache the API response to prevent an API call from being made on every page visit.
-  - **Installation Instructions:** [https://devcenter.heroku.com/articles/memcachier#local-usage](https://devcenter.heroku.com/articles/memcachier#local-usage)
+- [Docker Desktop](https://docs.docker.com/desktop/) (required)
+  - **Installation Instructions:** [https://docs.docker.com/desktop/](https://docs.docker.com/desktop/)
+  - If you choose not to install Docker Desktop, at a minimum you will need to install the Docker Engine and Docker Compose.
 
-### Obtain WeatherLink API Key
+### Obtain a WeatherLink API Key
 This project requires that you have a WeatherLink v2 API Key and Secret. 
 
 The WeatherLink Developer Portal outlines how to get your API key at [https://weatherlink.github.io/v2-api/tutorial](https://weatherlink.github.io/v2-api/tutorial):
@@ -51,27 +44,16 @@ Navigate to the location on your development machine where you want to place thi
 
     git clone https://github.com/mike-weiner/kenyonwx.git
 
-### Install npm Packages
-KenyonWX requires several packages to run on top of Node.js. Those packages can be installed by running:
-
-    npm install
-
 ### Create Environmental Variables Required by the Project
 This project requires several environmental variables to be set. Before running the project locally for this first time, you must set the necessary variables.
 
-#### Set NODE_ENV Environment Variable
-This project assumes that you are running in a `development` environment. Ensure that your `NODE_ENV` variable is set to `development`. If `NODE_ENV` is **not** set on your machine, Node.js defaults to setting `NODE_ENV` being set to `development`. Read more here: [https://nodejs.dev/learn/nodejs-the-difference-between-development-and-production](https://nodejs.dev/learn/nodejs-the-difference-between-development-and-production). 
-
-If you plan on running this code in a production environment, ensure that all of the project environment variables defined in [Set Project Environment Variables](#set-project-environment-variables) are set within your production environment.
-
 #### Set Project Environment Variables
 The Next.js KenyonWX project requires several additional environment variables. Set the values of these variables:
-1. Create a file named `.env.local` in the project root directory.
+1. Create a file named `.env.local` in the project's root directory.
 2. Within the newly created `.env.local` file, add the content found below. Replace any text contained within `< >` with your own values.
 
   ```
-  MEMCACHEDCLOUD_SERVERS="<host>:<memcached_server_port>"
-  PORT=<desired_webserver_port>
+  MEMCACHEDCLOUD_SERVERS=memcached:11211
   WEATHER_LINK_API_KEY="<your_weather_link_v2_api_key>"
   WEATHER_LINK_API_SECRET="<your_weather_link_v2_api_secret>"
   WEATHER_LINK_BASE_API_URL="https://api.weatherlink.com/v2/"
@@ -79,18 +61,17 @@ The Next.js KenyonWX project requires several additional environment variables. 
   WEATHER_LINK_SUMMARY_URL=<your_weather_station_weather_link_live_summary_url>
   ```
 
-### Run Project
-When you are ready to run the project locally, navigate to the directory with this repository's code on your local machine. 
+### Run the Project
+When you are ready to run the project locally:
 
-If you have installed memcached on your local machine, start your local memcached server by running:
-
-    memcached
-
-Start the KenyonWX web app by running:
-
-    npm run dev
-
-Visit **localhost:<desired_webserver_port>/** to view the weather information pulled from your weather station.
+1. Ensure `docker` is started on your machine.
+1. Navigate to the root of this project's directory on your machine.
+1. Run `make up`.
+   - This will use `docker compose` to start both the front-end web application and the backend instance of `memcached` for you.
+   - By default, port `3000` is used for the web application. You can specify a different port (so long that it is not used) by running `make up PORT=xxxx` where `xxxx` is your numerical port number (e.g. `3001`)
+1. Once the `make up` command completes, visit `localhost:3000` in your browser and you should see the website running on your local machine using your own weather station's data!
+1. Remember that if you change any of the code locally, you will need to re-build the container running the front-end web application. You can do this by running `make rebuild`.
+1. When you are done, you can run `make down` and all Docker resources will be cleaned up for you.
 
 ## Modifying What Weather Data is Displayed
 You can easily change what weather data is pulled from your WeatherLink weather station by modifying `parseWeatherLinkAPIResponse(data)` within `/src/utils/weather-link.js`. 
@@ -98,6 +79,8 @@ You can easily change what weather data is pulled from your WeatherLink weather 
 You will then also need to update the `/src/pages/index.js` view with the updated data that you are pulling from the WeatherLink API response.
 
 Information about what type of weather data is available within the WeatherLink API from different weather stations and sensors can be found here: [https://weatherlink.github.io/v2-api/interactive-sensor-catalog](https://weatherlink.github.io/v2-api/interactive-sensor-catalog).
+
+Don't forget to re-build your container (`make rebuild`) for your changes to take effect on your local environment.
 
 ## Contributing
 All contributions are welcome! First, open an issue to discuss what contributions you would like to make. All contributions should be conducted in a `feature/` branch as a PR will be required before any changes are merged into the `main` branch.
