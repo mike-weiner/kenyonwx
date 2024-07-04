@@ -10,7 +10,7 @@ KenyonWX is a Next.js app to display desired weather data from a weather station
   - [Clone Repo](#clone-repo)
   - [Create Environmental Variables Required by the Project](#create-environmental-variables-required-by-the-project)
   - [Run the Project](#run-the-project)
-  -[Modifying What Weather Data is Displayed](#modifying-what-weather-data-is-displayed)
+  - [Modifying What Weather Data is Displayed](#modifying-what-weather-data-is-displayed)
 - [Contributing](#contributing)
 - [License](#license)
 - [References](#references)
