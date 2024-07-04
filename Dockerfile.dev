@@ -1,0 +1,18 @@
+FROM node:21-alpine
+
+WORKDIR /app
+
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+ARG PORT
+ENV PORT=${PORT}
+EXPOSE ${PORT}
+
+CMD ["npm", "run", "dev"]

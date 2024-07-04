@@ -1,0 +1,37 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        - PORT=${PORT}
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - memcached
+    env_file:
+      - path: ./.env.dev
+        required: true
+    environment:
+      - PORT=${PORT:-3000}
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.5'
+          memory: '256M'
+        limits:
+          cpus: '1.0'
+          memory: '512M'
+    restart: always
+
+  memcached:
+    image: memcached:alpine
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.5'
+          memory: '256M'
+        limits:
+          cpus: '1.0'
+          memory: '512M'
+    restart: always
