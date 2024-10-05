@@ -1,0 +1,50 @@
+service: kenyonwx
+
+image: michaelweiner/kenyonwx
+
+servers:
+  web:
+    - 164.90.252.151
+
+proxy:
+  ssl: true
+  hosts:
+    - kenyonwx.com
+    - www.kenyonwx.com
+  app_port: 3000
+
+registry:
+  server: registry.hub.docker.com
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  clear:
+    WEATHER_LINK_BASE_API_URL: "https://api.weatherlink.com/v2/"
+    PORT: "3000"
+  secret:
+    - MEMCACHEDCLOUD_SERVERS
+    - WEATHER_LINK_API_KEY
+    - WEATHER_LINK_API_SECRET
+    - WEATHER_LINK_STATION_ID
+    - WEATHER_LINK_SUMMARY_URL
+
+builder:
+  arch: amd64
+  local: true
+  dockerfile: Dockerfile
+  context: .
+
+ssh:
+  user: <%= ENV['KAMAL_SSH_USERNAME'] %>
+  port: <%= ENV['KAMAL_SSH_PORT'] %>
+  keys_only: true
+  keys: [ "~/.ssh/droplet" ]
+
+accessories:
+  memcached:
+    image: memcached:1.6.31
+    host: 164.90.252.151
+    port: "127.0.0.1:11211:11211"

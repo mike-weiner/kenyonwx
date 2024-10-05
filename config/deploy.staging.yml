@@ -1,0 +1,8 @@
+proxy:
+  ssl: true
+  host: staging.kenyonwx.com
+  app_port: 3013
+
+env:
+  clear:
+    PORT: "3013"
