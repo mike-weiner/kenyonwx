@@ -1,11 +1,9 @@
-# Ignore ALL .DS_Store files
+# Ignore system files
 *.DS_Store
 
-# Ignore Next.js Build Directory
+# Ignore project-specific files and directories
 .next
+**/node_modules/
 
-# Ignore any node_modules directory as the local user will have their own installations by running `npm install`
-node_modules
-
-# Ignore any Environment Variable Files
+# Ignore environment and configuration files
 .env.*
