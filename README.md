@@ -49,8 +49,8 @@ This project requires several environmental variables to be set. Before running 
 
 #### Set Project Environment Variables
 The Next.js KenyonWX project requires several additional environment variables. Set the values of these variables:
-1. Create a file named `.env.local` in the project's root directory.
-2. Within the newly created `.env.local` file, add the content found below. Replace any text contained within `< >` with your own values.
+1. Create a file named `.env.dev` in the project's root directory.
+2. Within the newly created `.env.dev` file, add the content found below. Replace any text contained within `< >` with your own values.
 
   ```
   MEMCACHEDCLOUD_SERVERS=memcached:11211
