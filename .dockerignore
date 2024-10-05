@@ -1,14 +1,28 @@
-.dockerignore
+# Ignore system files
 *.DS_Store
+
+# Ignore environment and configuration files
 .env.*
+.kamal
+Makefile
+
+# Ignore Git-related files and directories
 .git
 .github
 .gitignore
+
+# Ignore project-specific files and directories
 .next
 .vscode
+**/node_modules/
+
+# Ignore Docker-related files
 Dockerfile*
 docker-compose*
-LICENSE.txt
+
+# Ignore logs and temporary files
 npm-debug.log
-**/node_modules/
+
+# Ignore licenses and documentation
+LICENSE.txt
 README.md
