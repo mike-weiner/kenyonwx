@@ -4,7 +4,7 @@ image: michaelweiner/kenyonwx
 
 servers:
   web:
-    - 164.90.252.151
+    - 24.144.66.105
 
 proxy:
   ssl: true
@@ -35,7 +35,6 @@ builder:
   arch: amd64
   local: true
   dockerfile: Dockerfile
-  context: .
 
 ssh:
   user: <%= ENV['KAMAL_SSH_USERNAME'] %>
@@ -46,5 +45,5 @@ ssh:
 accessories:
   memcached:
     image: memcached:1.6.31
-    host: 164.90.252.151
+    host: 24.144.66.105
     port: "127.0.0.1:11211:11211"
