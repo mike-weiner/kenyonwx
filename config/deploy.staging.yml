@@ -9,3 +9,6 @@ proxy:
 env:
   clear:
     PORT: "3013"
+
+builder:
+  dockerfile: Dockerfile
