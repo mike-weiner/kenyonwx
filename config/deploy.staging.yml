@@ -11,4 +11,4 @@ env:
     PORT: "3013"
 
 builder:
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.staging
