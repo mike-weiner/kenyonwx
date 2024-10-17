@@ -1,5 +1,3 @@
-service: kenyonwx-staging
-
 proxy:
   ssl: true
   hosts: 
