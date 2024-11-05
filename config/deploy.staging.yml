@@ -2,11 +2,4 @@ proxy:
   ssl: true
   hosts: 
     - staging.kenyonwx.com
-  app_port: 3013
 
-env:
-  clear:
-    PORT: "3013"
-
-builder:
-  dockerfile: Dockerfile.staging
