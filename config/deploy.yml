@@ -44,6 +44,6 @@ ssh:
 
 accessories:
   memcached:
-    image: memcached:1.6.31
+    image: memcached:1.6.34
     host: 24.144.66.105
     port: "127.0.0.1:11211:11211"
