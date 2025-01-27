@@ -1,4 +1,4 @@
-FROM node:22-slim AS builder
+FROM node:23-slim AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:22-slim
+FROM node:23-slim
 
 WORKDIR /app
 
