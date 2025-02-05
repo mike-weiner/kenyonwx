@@ -44,6 +44,10 @@ ssh:
 
 accessories:
   memcached:
-    image: memcached:1.6.34
+    image: memcached:1.6.35
     host: 24.144.66.105
     port: "127.0.0.1:11211:11211"
+    options:
+      conn-limit: 512
+      memory-limit: 256m
+      threads: 4
