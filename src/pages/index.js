@@ -6,7 +6,6 @@ import BottomBanner from '../components/BottomBanner';
 import FailureDialog from '../components/Dialog/Nondismissable/Failure';
 import WideSlideover from '../components/Slideover/Wide';
 import {
-  KW_LOG_PREFIX,
   KW_MEMCACHED_KEY, 
   KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS, 
   fetchWeatherData, 
@@ -14,6 +13,7 @@ import {
   setJsonDataInCache 
 } from '../utils/utils.js';
 
+const logger = require('../utils/logger.js');
 const memjs = require('memjs');
 
 export default function Homepage(props) {
@@ -193,7 +193,7 @@ export async function getServerSideProps(context) {
     }
   
     // If cached data is empty, we need to fetch new data.
-    console.log(KW_LOG_PREFIX + "Making External WL API Query");
+    logger.info("Making an external API call to fetch new weather data.")
     parsedWeatherData = await fetchWeatherData();
 
     const dataToCache = {
@@ -204,7 +204,7 @@ export async function getServerSideProps(context) {
     // Cache the new data
     await setJsonDataInCache(mc, KW_MEMCACHED_KEY, dataToCache, KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS);
   } catch (err) {
-    console.log(KW_LOG_PREFIX + "An unexpected error occurred.", err);
+    logger.error(err, "An unexpected error has occurred.")
 
     return {
       props: {
