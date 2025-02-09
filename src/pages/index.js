@@ -5,11 +5,16 @@ import StatPack from '../components/Packs/StatPack';
 import BottomBanner from '../components/BottomBanner';
 import FailureDialog from '../components/Dialog/Nondismissable/Failure';
 import WideSlideover from '../components/Slideover/Wide';
+import {
+  KW_LOG_PREFIX,
+  KW_MEMCACHED_KEY, 
+  KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS, 
+  fetchWeatherData, 
+  getJsonDataFromCache, 
+  setJsonDataInCache 
+} from '../utils/utils.js';
 
-const axios = require('axios');
 const memjs = require('memjs');
-
-const weatherLinkUtil = require("../utils/weather-link.js");
 
 export default function Homepage(props) {
   const [fetchingData, setFetchingData] = useState(true);
@@ -168,39 +173,38 @@ export default function Homepage(props) {
 }
 
 export async function getServerSideProps(context) {
+  let error = { title: "", msg: "", };
+  let parsedWeatherData;
 
-  const KW_LOG_PREFIX = "[KW]: ";
-  const KW_MEMCACHED_KEY = "kwx-data";
-  const KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS = 300;
-
-  let error = {
-    title: "",
-    msg: "",
-  };
-
-  let mc = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
+  const mc = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
     username: process.env.MEMCACHEDCLOUD_USERNAME,
     password: process.env.MEMCACHEDCLOUD_PASSWORD,
   });
 
-  let dataInCache = false;
-
   try {
-    let { value } = await mc.get(KW_MEMCACHED_KEY);
-    if (value != null) {
-      dataInCache = true;
-
-      let parsedCacheData = JSON.parse(value.toString('utf-8'));
-
+    const cachedData = await getJsonDataFromCache(mc, KW_MEMCACHED_KEY);
+    if (cachedData) {
       return {
         props: {
-          wxData: parsedCacheData.wxData,
-          error: parsedCacheData.error,
+          wxData: cachedData.wxData,
+          error: cachedData.error,
         },
-      }
+      };
     }
+  
+    // If cached data is empty, we need to fetch new data.
+    console.log(KW_LOG_PREFIX + "Making External WL API Query");
+    parsedWeatherData = await fetchWeatherData();
+
+    const dataToCache = {
+      wxData: parsedWeatherData,
+      error: error,
+    };
+
+    // Cache the new data
+    await setJsonDataInCache(mc, KW_MEMCACHED_KEY, dataToCache, KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS);
   } catch (err) {
-    console.log(KW_LOG_PREFIX + "Failure to Query Cache", err);
+    console.log(KW_LOG_PREFIX + "An unexpected error occurred.", err);
 
     return {
       props: {
@@ -211,55 +215,8 @@ export async function getServerSideProps(context) {
         }
       }
     }
-  }
-
-  if (!dataInCache) {
-    console.log(KW_LOG_PREFIX + "Making External WL API Query");
-
-    try {
-      var res = await axios.get(
-        "https://api.weatherlink.com/v2/current/" + process.env.WEATHER_LINK_STATION_ID + "?api-key=" + process.env.WEATHER_LINK_API_KEY,
-        {
-          headers: {
-            "X-Api-Secret": process.env.WEATHER_LINK_API_SECRET,
-          }
-        }
-      );
-    } catch (err) {
-      console.log(KW_LOG_PREFIX + "Failure Making WL API Query", err)
-
-      return {
-        props: {
-          wxData: {},
-          error: {
-            title: "Failure Making WL API Query",
-            msg: "Unable to query WeatherLink API for up-to-date data. Please contact a site administrator to have the issue investigated.",
-          }
-        }
-      }
-    }
-
-    try {
-      var parsedWeatherData = weatherLinkUtil.parseWeatherLinkAPIResponse(res.data);
-
-      let dataToCache = {
-        wxData: parsedWeatherData,
-        error: error,
-      }
-
-      let { value } = await mc.set(
-        KW_MEMCACHED_KEY,
-        JSON.stringify(dataToCache),
-        { expires: KW_MEMCACHED_TIMEOUT_DURATION_IN_SECONDS }
-      );
-
-    } catch (error) {
-      console.log(KW_LOG_PREFIX + "Error Caching Data", err)
-      error = {
-        title: 'Error Caching Data',
-        msg: "Unable to cache WL data. Please contact a site administrator.",
-      }
-    }
+  } finally {
+    mc.close();
   }
 
   return {
