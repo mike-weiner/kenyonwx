@@ -1,8 +1,10 @@
-FROM node:23-slim AS builder
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
 ENV NODE_ENV=production
+# Disable Next.js Telemetry
+ENV NEXT_TELEMETRY_DISABLED=1 
 
 COPY package.json ./
 COPY package-lock.json ./
@@ -13,7 +15,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:23-slim
+FROM node:24-slim
 
 WORKDIR /app
 
