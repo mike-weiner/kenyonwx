@@ -16,7 +16,7 @@
   "author": "Michael Weiner",
   "license": "MIT",
   "engines": {
-    "node": "23.x"
+    "node": "24.x"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
