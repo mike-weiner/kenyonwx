@@ -1,5 +1,5 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
-import { Disclosure } from '@headlessui/react'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { ChevronUpIcon } from '@heroicons/react/20/solid'
 
 import SkeletonCard from "../../Skeletons/Card";
@@ -8,17 +8,17 @@ import { classNames } from '../../../utils/utils';
 export default function StatPack(props) {
   return (
     <div className=" w-full rounded-2xl bg-white">
-      <Disclosure defaultOpen={true}>
+      <Disclosure as="div" defaultOpen={true}>
         {({ open }) => (
           <>
-            <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left text-sm font-medium text-black-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
+            <DisclosureButton className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left text-sm font-medium text-black-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
               <span>{props.title || "title"}</span>
               <ChevronUpIcon
                 className={`${open ? 'rotate-180 transform' : ''
                   } h-5 w-5 text-gray-500`}
               />
-            </Disclosure.Button>
-            <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+            </DisclosureButton>
+            <DisclosurePanel className="px-4 pt-4 pb-2 text-sm">
               <div>
                 <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
                   {
@@ -64,7 +64,7 @@ export default function StatPack(props) {
                   }
                 </dl>
               </div>
-            </Disclosure.Panel>
+            </DisclosurePanel>
           </>
         )}
       </Disclosure>
