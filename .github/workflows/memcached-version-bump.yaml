@@ -1,0 +1,92 @@
+name: Update Memcached Version
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get latest available memcached version
+        id: latest
+        run: |
+          LATEST=$(curl -s "https://hub.docker.com/v2/namespaces/library/repositories/memcached/tags?page_size=200" \
+            | jq -r '.results[].name' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V \
+            | tail -n 1)
+
+          if [ -z "$LATEST" ]; then
+            echo "ERROR: Could not retrieve latest Memcached version."
+            exit 1
+          fi
+
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+
+      - name: Read current memcached version
+        id: current
+        run: |
+          CURRENT=$(grep -oE 'memcached:[0-9]+\.[0-9]+\.[0-9]+' config/deploy.yml | sed 's/memcached://')
+
+          if [ -z "$CURRENT" ]; then
+            echo "ERROR: Could not find current memcached version in config/deploy.yml"
+            exit 1
+          fi
+
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+
+      - name: Determine if update is needed
+        id: compare
+        run: |
+          if [ "${{ steps.latest.outputs.latest }}" = "${{ steps.current.outputs.current }}" ]; then
+            echo "update_needed=false" >> $GITHUB_OUTPUT
+          else
+            echo "update_needed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop if no update needed
+        if: steps.compare.outputs.update_needed == 'false'
+        run: echo "No update needed."
+
+      - name: Update version in file
+        if: steps.compare.outputs.update_needed == 'true'
+        run: |
+          sed -i "s/memcached:${{ steps.current.outputs.current }}/memcached:${{ steps.latest.outputs.latest }}/" config/deploy.yml
+
+      - name: Commit and push changes
+        if: steps.compare.outputs.update_needed == 'true'
+        env:
+          LATEST: ${{ steps.latest.outputs.latest }}
+        run: |
+          BRANCH="bump-memcached-to-${LATEST}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git switch -c "$BRANCH"
+          git add config/deploy.yml
+          git commit -m "chore: bump memcached to ${LATEST}"
+          git push origin "$BRANCH"
+
+      - name: Create Pull Request
+        if: steps.compare.outputs.update_needed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LATEST: ${{ steps.latest.outputs.latest }}
+          CURRENT: ${{ steps.current.outputs.current }}
+        run: |
+          gh pr create \
+            --title "chore: Bump memcached to ${LATEST}" \
+            --body "Updated Memcached from \`${CURRENT}\` → \`${LATEST}\`." \
+            --head "bump-memcached-to-${LATEST}" \
+            --base main
