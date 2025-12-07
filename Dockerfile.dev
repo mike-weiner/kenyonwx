@@ -1,18 +1,43 @@
-FROM node:24-alpine AS builder
+# -----------------------------
+# 1) Builder stage
+# -----------------------------
+FROM node:24-slim AS builder
+
+WORKDIR /app
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Install all dependencies (including dev)
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy all source code
+COPY . .
+
+# -----------------------------
+# 2) Dev runtime stage
+# -----------------------------
+FROM node:24-slim AS dev
 
 WORKDIR /app
 
-# Disable Next.js Telemetry
-ENV NEXT_TELEMETRY_DISABLED=1 
+# Use a non-root user that matches production distroless user
+RUN groupadd --system nonroot && \
+    useradd --system --gid nonroot --no-create-home nonroot
 
-COPY package.json ./
-COPY package-lock.json ./
+# Make .next writable for hot reload
+RUN mkdir -p /app/.next && chmod -R 777 /app/.next
 
-RUN npm install
+USER nonroot
 
-COPY . .
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
 
-ENV PORT=${PORT}
+# Copy dependencies and source from builder
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app ./
+
 EXPOSE ${PORT}
 
 CMD ["npm", "run", "dev"]
