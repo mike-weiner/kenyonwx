@@ -1,4 +1,4 @@
-FROM node:24-slim AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -11,18 +11,22 @@ RUN npm ci --omit=dev
 COPY . .
 RUN npm run build
 
-FROM gcr.io/distroless/nodejs24-minimal:nonroot
+FROM node:24-alpine
 
 WORKDIR /app
 
+# Create a non-root user called 'nonroot'
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+
 COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-ENV PORT=3000
+RUN chown -R nonroot:nonroot /app
 
+USER nonroot
+
+ENV PORT=3000
 EXPOSE ${PORT}
 
-# Distroless cannot run npm; start Next.js directly
-CMD ["/nodejs/bin/node", "node_modules/.bin/next", "start", "-p", "${PORT}"]
+CMD ["npm", "run", "start"]
