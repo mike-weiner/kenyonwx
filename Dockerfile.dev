@@ -1,6 +1,7 @@
-FROM node:24-slim AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
+
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 
@@ -9,13 +10,12 @@ RUN npm ci
 
 COPY . .
 
-FROM node:24-slim AS dev
+FROM node:24-alpine AS dev
 
 WORKDIR /app
 
-# Use a non-root user that matches production distroless user
-RUN groupadd --system nonroot && \
-    useradd --system --gid nonroot --no-create-home nonroot
+# Create a non-root user called 'nonroot'
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 
 # Make .next writable for hot reload
 RUN mkdir -p /app/.next && chmod -R 777 /app/.next
