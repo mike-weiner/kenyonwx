@@ -41,7 +41,7 @@ ssh:
 
 accessories:
   memcached:
-    image: memcached:1.6.39
+    image: memcached:1.6.40
     host: atlas
     port: "127.0.0.1:11211:11211"
     cmd: --conn-limit 100 --memory-limit 256m --threads 4
