@@ -4,10 +4,10 @@ image: michaelweiner/kenyonwx
 
 servers:
   web:
-    - atlas
+    - local.springcreek.io
 
 proxy:
-  ssl: true
+  ssl: false
   hosts:
     - kenyonwx.com
     - www.kenyonwx.com
@@ -32,17 +32,18 @@ env:
     - WEATHER_LINK_SUMMARY_URL
 
 builder:
-  arch: amd64
+  arch: arm64
   local: true
   dockerfile: Dockerfile
 
 ssh:
   user: <%= ENV['KAMAL_SSH_USERNAME'] %>
+  port: 2200
 
 accessories:
   memcached:
     image: memcached:1.6.40
-    host: atlas
+    host: local.springcreek.io
     port: "127.0.0.1:11211:11211"
     cmd: --conn-limit 100 --memory-limit 256m --threads 4
     options:
