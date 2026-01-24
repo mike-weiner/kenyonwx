@@ -1,5 +1,5 @@
 proxy:
-  ssl: true
+  ssl: false
   hosts: 
     - staging.kenyonwx.com
 
