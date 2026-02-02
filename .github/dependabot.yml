@@ -9,3 +9,16 @@ updates:
       - "mike-weiner"
     labels:
       - "dependencies"
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      tailwind:
+        patterns:
+          - "@tailwindcss/*"
+          - "tailwindcss"
+      headlessui:
+        patterns:
+          - "@headlessui/*"
+          - "@heroicons/*"
