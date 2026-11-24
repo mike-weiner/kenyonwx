@@ -19,10 +19,19 @@ jobs:
 
       - name: Get latest available memcached version
         id: latest
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          LATEST=$(curl -s "https://hub.docker.com/v2/namespaces/library/repositories/memcached/tags?page_size=200" \
-            | jq -r '.results[].name' \
-            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+          # Docker Hardened Images (dhi.io) require Docker Hub credentials to list tags
+          TOKEN=$(curl -sf -u "${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}" \
+            "https://dhi.io/token?service=registry.docker.io&scope=repository:memcached:pull" \
+            | jq -r '.token')
+          echo "::add-mask::${TOKEN}"
+
+          LATEST=$(curl -sf -H "Authorization: Bearer ${TOKEN}" "https://dhi.io/v2/memcached/tags/list?n=10000" \
+            | jq -r '.tags[]' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-alpine[0-9]+\.[0-9]+$' \
             | sort -V \
             | tail -n 1)
 
@@ -36,7 +45,7 @@ jobs:
       - name: Read current memcached version
         id: current
         run: |
-          CURRENT=$(grep -oE 'memcached:[0-9]+\.[0-9]+\.[0-9]+' config/deploy.yml | sed 's/memcached://')
+          CURRENT=$(grep -oE 'memcached:[0-9]+\.[0-9]+\.[0-9]+-alpine[0-9]+\.[0-9]+' config/deploy.yml | sed 's/memcached://')
 
           if [ -z "$CURRENT" ]; then
             echo "ERROR: Could not find current memcached version in config/deploy.yml"
