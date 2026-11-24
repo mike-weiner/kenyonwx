@@ -42,7 +42,14 @@ ssh:
 
 accessories:
   memcached:
-    image: memcached:1.6.45
+    # Docker Hardened Image (dhi.io/memcached), authenticated with Docker Hub credentials
+    image: memcached:1.6.45-alpine3.24
+    registry:
+      server: dhi.io
+      username:
+        - KAMAL_REGISTRY_USERNAME
+      password:
+        - KAMAL_REGISTRY_PASSWORD
     host: local.springcreek.io
     port: "127.0.0.1:11211:11211"
     cmd: --conn-limit 100 --memory-limit 256m --threads 4
