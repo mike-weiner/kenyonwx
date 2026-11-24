@@ -1,33 +1,25 @@
-FROM node:26-alpine AS builder
+# Local development image. Unlike the production Dockerfile, this one runs
+# `next dev`, which needs npm at runtime, so it uses the -dev hardened variant
+# (with Socket Firewall screening npm installs) instead of the minimal runtime image.
+FROM dhi.io/node:26-alpine3.24-sfw-dev
 
 WORKDIR /app
 
-ENV NODE_ENV=development
-ENV NEXT_TELEMETRY_DISABLED=1
-
-COPY package.json package-lock.json ./
-RUN npm ci
-
-COPY . .
-
-FROM node:26-alpine AS dev
-
-WORKDIR /app
-
-# Create a non-root user called 'nonroot'
-RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
-
-# Make .next writable for hot reload
-RUN mkdir -p /app/.next && chmod -R 777 /app/.next
-
-USER nonroot
+# WORKDIR is created as root; the node user needs to create .next/ in it
+RUN chown node:node /app
 
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app ./
+COPY --chown=node:node package.json package-lock.json ./
+RUN npm ci
+
+# --chown lets `next dev` write .next/ for compilation and hot reload
+COPY --chown=node:node . .
+
+# The -dev variant defaults to root; drop to its built-in non-root user
+USER node
 
 EXPOSE ${PORT}
 
